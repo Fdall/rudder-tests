@@ -28,6 +28,13 @@ def external_setup():
   execute("agent", "apt-key add /tmp/rudder_apt_key.pub")
   return "/tmp/ncf"
 
+def clean_external_setup():
+  if scenario.platform.hosts ['agent'].info['system'] in need_external_setup:
+    folder = "external_files/" + scenario.pf
+    files = [ folder + "/rudder_apt_key.pub", folder + "/rudder_rpm_key.pub", folder + "/ncf-setup", folder + "/ncf" ]
+    folders = " ".join(files)
+    execute("localhost", "rm -rf " + folders)
+
 # Get CFEngine version used for the tests
 cfengine_version = get_param("cfengine_version", "")
 export_prefix = ""
